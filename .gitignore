@@ -1,3 +1,5 @@
 #preventing node modules to push in the github
 
 node_modules
+
+.env
