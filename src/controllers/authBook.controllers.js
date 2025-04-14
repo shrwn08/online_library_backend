@@ -2,7 +2,8 @@ const multer  = require('multer')
 const upload = multer({ dest: '../public/data/uploads/' })
 const fs = require('fs');
 const cloudinary = require('../utils/cloudinary')
-const bookModel = require("../models/book.model")
+const bookModel = require("../models/book.model");
+const { log } = require('console');
 
 const addBook = async (req, res) => {
     const {title, author, category, description,  avatar} = req.body;
@@ -52,5 +53,23 @@ const getAllBooks = async (req, res)=>{
     }
 }
 
+        //getting using the params of the book card
+const getDetailsBook = async (req, res) => {
+    const {id} =req.params;
+    
 
-module.exports = {addBook, getAllBooks}
+    try {
+        const book = await bookModel.findById(id);
+
+        if(!book){
+            return res.status(404).json({message : "Book not found"});
+        }
+        
+        res.status(200).json({message  : "Book found", book});
+    } catch (error) {
+        res.status(500).json({message : "Server Error", error})
+    }
+}
+
+
+module.exports = {addBook, getAllBooks, getDetailsBook}
