@@ -13,7 +13,7 @@ dbConnection();
 
 const app = express();
 
-app.use(cors({origin : "https://ls-frontend-theta.vercel.app/"}))
+app.use(cors({origin : "*"}))
 const PORT = process.env.PORT;
 
 app.use(express.json());
