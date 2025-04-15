@@ -43,11 +43,27 @@ const addBook = async (req, res) => {
 };
 
 const getAllBooks = async (req, res)=>{
+    const {category} = req.query;
+
+    
 
     try {
+            if(!category){
+
         const books =  await bookModel.find();
         
-        res.status(200).json({message : "fetched all books", books})
+        return res.status(200).json({message : "fetched all books", books})
+            }
+                
+            const newCategory = category[0].toUpperCase() + category.slice(1,category.length)
+            console.log(newCategory)
+            const books = await bookModel.find({category: newCategory});
+
+            if(!books){
+                return res.status(404).json({message : "books not found"})
+            }
+
+            res.status(200).json({message : "book", books})
     } catch (error) {
         res.status(500).json({message : 'Server error', error})
     }
@@ -69,7 +85,18 @@ const getDetailsBook = async (req, res) => {
     } catch (error) {
         res.status(500).json({message : "Server Error", error})
     }
+
+
+    const getBookCategoty = () =>{
+
+    }
 }
+
+
+
+// update the rating
+
+
 
 
 module.exports = {addBook, getAllBooks, getDetailsBook}
